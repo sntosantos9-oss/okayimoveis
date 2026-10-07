@@ -201,6 +201,17 @@ section{position:relative}
 .modal.is-done .rm-done{display:block}
 @media (prefers-reduced-motion:no-preference){.modal[open]{animation:rise .45s var(--ease)}}
 
+/* ---------- Pop-up de parabéns ---------- */
+.success{text-align:left}
+.sm-mark{width:64px;height:64px;border-radius:50%;border:1px solid var(--champ);color:var(--champ);display:flex;align-items:center;justify-content:center;margin-bottom:28px}
+.sm-mark svg{width:28px;height:28px}
+.success h3{font-size:clamp(28px,3vw,36px);margin-bottom:16px}
+.sm-text{margin:0 0 24px;color:var(--stone)}
+.sm-now{margin:0 0 24px;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-stretch:125%;font-weight:250;font-size:clamp(24px,2.6vw,32px);line-height:1.2;letter-spacing:-.015em}
+.sm-now strong{font-weight:600;color:var(--champ);text-transform:uppercase;letter-spacing:.02em}
+.sm-next{margin:0 0 28px;font-size:15px;color:var(--stone)}
+.sm-actions{display:flex;flex-direction:column;gap:10px}
+
 /* ---------- Casal ---------- */
 .couple{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,7vw,120px);align-items:center}
 .couple .slot{aspect-ratio:4/5;border-bottom-right-radius:100% 42%}
@@ -279,6 +290,11 @@ footer{border-top:1px solid var(--line);padding:48px 0 calc(48px + env(safe-area
 footer .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:32px}
 footer p{margin:0;font-size:13px;line-height:1.7;color:#77726B}
 footer .brand{display:inline-block;margin-bottom:8px}
+
+/* botão flutuante de WhatsApp */
+.wa-float{position:fixed;right:24px;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:31;width:60px;height:60px;border-radius:50%;background:var(--champ);color:#000;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 32px -8px rgba(0,0,0,.6);transition:transform .25s var(--ease),bottom .35s var(--ease)}
+.wa-float:hover{transform:scale(1.06)}
+.wa-float.lift{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 
 /* barra fixa de CTA no celular */
 .mobile-cta{display:none}
@@ -454,11 +470,7 @@ footer .brand{display:inline-block;margin-bottom:8px}
     <div class="compare">
       <div>
         <h3>João Pessoa</h3>
-        <dl>
-          <dt>m² Setai no lançamento</dt><dd>R$ [X]</dd>
-          <dt>m² Setai hoje</dt><dd>R$ [Y]</dd>
-          <dt>Valorização</dt><dd>[Z]%</dd>
-        </dl>
+        <p>Em 2018, a Setai chegou para redefinir o alto padrão da cidade. Quem entrou cedo acompanhou de perto a transformação dos bairros, do padrão dos empreendimentos e do valor dos imóveis.</p>
       </div>
       <div>
         <h3>Natal</h3>
@@ -490,6 +502,20 @@ footer .brand{display:inline-block;margin-bottom:8px}
   </div>
 </section>
 
+<!-- Pop-up de parabéns (após enviar o formulário da lista VIP) -->
+<dialog class="modal success" id="success-modal" aria-labelledby="sm-title">
+  <button class="modal-close" type="button" id="close-success" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <div class="sm-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+  <h3 id="sm-title">Parabéns pela decisão<span id="sm-name"></span>.</h3>
+  <p class="sm-text">Você está na lista VIP Setai × Porsche Consulting em Natal. Em João Pessoa, quem entrou cedo viu o cenário mudar.</p>
+  <p class="sm-now">O momento de ganhar com investimentos em Natal é <strong>agora</strong>.</p>
+  <p class="sm-next">Nossa equipe vai chamar você no WhatsApp com os próximos passos e as condições dos benefícios.</p>
+  <div class="sm-actions">
+    <a class="btn" id="sm-wa" href="#" target="_blank" rel="noopener">Falar agora no WhatsApp</a>
+    <button class="btn btn-ghost" type="button" id="sm-continue">Continuar na página</button>
+  </div>
+</dialog>
+
 <!-- Pop-up do relatório -->
 <dialog class="modal" id="report-modal" aria-labelledby="rm-title">
   <button class="modal-close" type="button" id="close-report" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
@@ -515,6 +541,7 @@ footer .brand{display:inline-block;margin-bottom:8px}
     <h3>Seu download começou.</h3>
     <p>Se o arquivo não abrir, use o botão abaixo. Nossa equipe também vai enviar o relatório no seu WhatsApp.</p>
     <a class="btn" id="r-again" href="#" target="_blank" rel="noopener" download>Baixar novamente</a>
+    <a class="btn btn-ghost" id="r-wa" href="#" target="_blank" rel="noopener" style="margin-top:10px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></svg><span style="margin-left:10px">Falar no WhatsApp</span></a>
   </div>
 </dialog>
 
@@ -528,7 +555,7 @@ footer .brand{display:inline-block;margin-bottom:8px}
     </div>
     <div>
       <h2 class="h2 display">Quem vai te atender.</h2>
-      <blockquote>“Acompanhamos a Setai em João Pessoa desde [ano]. Vimos clientes nossos comprarem na planta e hoje terem um patrimônio que vale muito mais. Queremos levar essa mesma leitura para quem investe em Natal.”</blockquote>
+      <blockquote>“Acompanhamos a Setai em João Pessoa desde o primeiro lançamento da marca, em 2019. Vimos clientes nossos comprarem na planta e hoje terem um patrimônio que vale muito mais. Queremos levar essa mesma leitura para quem investe em Natal.”</blockquote>
       <div class="sign">Felipe e Cinthia<span>Fundadores da Okay Imóveis</span></div>
     </div>
   </div>
@@ -568,7 +595,7 @@ footer .brand{display:inline-block;margin-bottom:8px}
       <ul>
         <li>Procura o menor preço do mercado</li>
         <li>Busca retorno garantido em curto prazo</li>
-        <li>Não tem interesse em imóveis acima de [faixa de valor]</li>
+        <li>Não tem disponibilidade para investir a partir de R$ 500 mil, com 10% de entrada</li>
       </ul>
     </div>
   </div>
@@ -585,7 +612,7 @@ footer .brand{display:inline-block;margin-bottom:8px}
           <div><span class="v" data-u="h">--</span><span class="u">horas</span></div>
           <div><span class="v" data-u="m">--</span><span class="u">minutos</span></div>
         </div>
-        <p class="count-note" id="count-note">Até o evento de pré-lançamento. O evento tem [X] lugares, reservados por ordem de cadastro na lista.</p>
+        <p class="count-note" id="count-note">Até o evento de pré-lançamento. O evento tem 20 lugares, reservados por ordem de cadastro na lista.</p>
       </div>
 
       <div class="form" id="form">
@@ -648,15 +675,15 @@ footer .brand{display:inline-block;margin-bottom:8px}
     </details>
     <details>
       <summary>Preciso ir a João Pessoa?<span class="pm" aria-hidden="true"></span></summary>
-      <p>Não. Atendemos em Natal [confirmar formato] e por videochamada. O tour em João Pessoa é opcional, para quem quer ver as entregas de perto.</p>
+      <p>Não. O atendimento pode ser presencial ou online, como for melhor para você. O tour em João Pessoa é opcional, para quem quer ver as entregas de perto. <a href="#" data-wa="Olá! Quero agendar um atendimento sobre o pré-lançamento Setai em Natal." target="_blank" rel="noopener">Agendar pelo WhatsApp</a></p>
     </details>
     <details>
       <summary>Como funciona o fim de semana Setai?<span class="pm" aria-hidden="true"></span></summary>
-      <p>As condições são enviadas após o cadastro na lista VIP.</p>
+      <p>As condições são enviadas após o cadastro na lista VIP. <a href="#" data-wa="Olá! Já me inscrevi na lista VIP Setai Natal. Quais são as condições do fim de semana Setai?" target="_blank" rel="noopener">Já me inscrevi, quero saber as condições</a></p>
     </details>
     <details>
       <summary>Quem é a Okay Imóveis?<span class="pm" aria-hidden="true"></span></summary>
-      <p>Somos uma imobiliária de alto padrão de João Pessoa, liderada por Felipe e Cinthia, com atuação em empreendimentos Setai. CRECI [nº].</p>
+      <p>Somos uma imobiliária de alto padrão de João Pessoa, liderada por Felipe e Cinthia, com atuação em empreendimentos Setai. CRECI 1314J.</p>
     </details>
   </div>
 
@@ -672,27 +699,34 @@ footer .brand{display:inline-block;margin-bottom:8px}
   <div class="wrap">
     <div>
       <a class="brand" href="#topo">OKAY<small>Imóveis</small></a>
-      <p>CRECI [nº] · João Pessoa/PB</p>
+      <p>CRECI 1314J · João Pessoa/PB</p>
+      <p><a href="#" data-wa="Olá! Vi a página da Setai em Natal e quero saber mais sobre a lista VIP." target="_blank" rel="noopener" style="color:var(--champ)">Falar com a Okay no WhatsApp</a></p>
     </div>
     <p>Material de pré-lançamento, sem oferta de venda. Imagens ilustrativas. Informações sujeitas a alteração e ao registro da incorporação. Benefícios oferecidos pela Okay Imóveis, sujeitos a condições enviadas aos cadastrados. Setai é marca do Setai Grupo GP. Porsche Consulting, Porsche Design e Porsche são marcas registradas de seus respectivos titulares. Imagens de empreendimentos e edifícios em outras cidades são ilustrativas e não representam o empreendimento de Natal.</p>
   </div>
 </footer>
 
+<a class="wa-float" href="#" data-wa="Olá! Vi a página da Setai em Natal e quero saber mais sobre a lista VIP." target="_blank" rel="noopener" aria-label="Falar no WhatsApp"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></svg></a>
 <div class="mobile-cta" id="mobile-cta"><a class="btn" href="#lista">Entrar na lista VIP</a></div>
 
 <script>
 /* =========================================================
    CONFIGURAÇÃO: edite aqui
    whatsapp:   número da Okay com DDI e DDD, só dígitos (ex.: 5583999999999)
-   webhookUrl: URL que recebe o lead (CRM, Make, Zapier, n8n). Vazio = não envia.
+   webhookUrl: endpoint do CRM Supremo que recebe o lead (POST com JSON). Vazio = não envia.
    eventDate:  data do evento de pré-lançamento (ISO com fuso). Vazio = esconde a contagem.
    ========================================================= */
 const CONFIG = {
-  whatsapp: '55[DDD][NUMERO]',
-  webhookUrl: '',
+  whatsapp: '558394000069',
+  webhookUrl: 'https://integracoes.sistemasupremo.com.br/formulario_externos_callback.php?token=s742d20250612171038',
+  idSituacao: '9818', // situação do funil no CRM Supremo para os leads desta página
   eventDate: '', // ex.: '2026-11-20T19:00:00-03:00'
   reportUrl: ''  // link do PDF do relatório (Google Drive, site etc.). Vazio = só envia por WhatsApp.
 };
+
+/* WhatsApp: link com mensagem pronta */
+function waLink(msg){ return `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`; }
+document.querySelectorAll('[data-wa]').forEach(a => { a.href = waLink(a.dataset.wa); });
 
 /* contagem regressiva */
 (function(){
@@ -700,7 +734,7 @@ const CONFIG = {
   const note = document.getElementById('count-note');
   if(!CONFIG.eventDate){
     box.style.display = 'none';
-    note.textContent = 'A data do evento sai primeiro para a lista VIP. São [X] lugares, reservados por ordem de cadastro.';
+    note.textContent = 'A data do evento sai primeiro para a lista VIP. São 20 lugares, reservados por ordem de cadastro.';
     return;
   }
   const target = new Date(CONFIG.eventDate).getTime();
@@ -718,6 +752,53 @@ const CONFIG = {
     document.getElementById('topbar-text').textContent = (days === 1 ? 'Falta 1 dia' : 'Faltam ' + days + ' dias') + ' para o evento de pré-lançamento em Natal. Acesso antecipado só para a lista VIP.';
   }
 })();
+
+/* envio do lead para o CRM Supremo
+   qualificacao: cada fieldset vira "legenda": "opções marcadas" (radio e checkbox) */
+function coletarQualificacao(root){
+  const q = {};
+  root.querySelectorAll('fieldset').forEach(fs => {
+    const legend = fs.querySelector('legend');
+    const marcados = [...fs.querySelectorAll('input[type=radio]:checked, input[type=checkbox]:checked')].map(i => i.value);
+    if(legend && marcados.length) q[legend.textContent.trim()] = marcados.join(', ');
+  });
+  return q;
+}
+
+async function enviarLead(payload){
+  const tag = '[Lead CRM]';
+  payload = {...payload, id_situacao: CONFIG.idSituacao};
+  console.groupCollapsed(`${tag} ${payload.name} | ${payload.resposta}`);
+  console.log('Endpoint:', CONFIG.webhookUrl || '(vazio: envio desativado)');
+  console.log('Payload:', payload);
+  console.log('JSON:', JSON.stringify(payload, null, 2));
+  if(!CONFIG.webhookUrl){ console.warn(`${tag} webhookUrl vazio, lead não enviado.`); console.groupEnd(); return false; }
+  const t0 = performance.now();
+  try{
+    // text/plain evita o preflight CORS (o servidor não libera o header Content-Type); o corpo continua sendo JSON
+    const res = await fetch(CONFIG.webhookUrl, {method:'POST', headers:{'Content-Type':'text/plain;charset=UTF-8'}, body: JSON.stringify(payload)});
+    const body = await res.text();
+    console.log(`Status: ${res.status} ${res.statusText} (${Math.round(performance.now() - t0)} ms)`);
+    console.log('Resposta:', body);
+    let erro = !res.ok;
+    try{ const j = JSON.parse(body); if(j && j.error) erro = true; }catch(_){}
+    if(erro) console.error(`${tag} o CRM retornou erro.`, body);
+    else console.info(`${tag} lead enviado com sucesso.`);
+    return !erro;
+  }catch(e){
+    console.error(`${tag} falha de rede/CORS ao enviar lead.`, e);
+    return false;
+  }finally{
+    console.groupEnd();
+  }
+}
+
+/* texto do campo "resposta": origem do lead + UTMs presentes na URL */
+function textoResposta(origem, params){
+  const utms = ['utm_source','utm_medium','utm_campaign','utm_content']
+    .filter(k => params.get(k)).map(k => `${k}=${params.get(k)}`).join(' | ');
+  return utms ? `${origem} | ${utms}` : origem;
+}
 
 /* máscara simples de WhatsApp */
 const whats = document.getElementById('whats');
@@ -747,24 +828,27 @@ document.getElementById('submit').addEventListener('click', async () => {
   err.textContent = '';
 
   const params = new URLSearchParams(location.search);
-  const lead = {
-    nome, whatsapp: tel, objetivo: obj.value, faixa: faixa.value,
-    origem: 'LP Setai Natal', data: new Date().toISOString(),
-    utm_source: params.get('utm_source') || '', utm_medium: params.get('utm_medium') || '',
-    utm_campaign: params.get('utm_campaign') || '', utm_content: params.get('utm_content') || ''
-  };
-
-  if(CONFIG.webhookUrl){
-    try{
-      await fetch(CONFIG.webhookUrl, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(lead)});
-    }catch(e){ console.warn('Falha ao enviar lead para o webhook', e); }
-  }
+  const btn = document.getElementById('submit');
+  btn.disabled = true;
+  await enviarLead({
+    name: nome,
+    email: '',
+    phone: tel,
+    ddi: '+55',
+    resposta: textoResposta('LP Setai Natal - Lista VIP', params),
+    nome_campanha: params.get('utm_campaign') || 'LP Setai Natal',
+    qualificacao: coletarQualificacao(form)
+  });
+  btn.disabled = false;
   if(window.fbq){ fbq('track','Lead'); }
   if(window.gtag){ gtag('event','generate_lead'); }
 
-  const msg = `Olá! Sou ${nome}, acabei de entrar na lista VIP Setai Natal. Meu objetivo: ${obj.value.toLowerCase()}, faixa ${faixa.value}.`;
-  document.getElementById('wa-link').href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
+  document.getElementById('wa-link').href = waLink(`Olá! Sou ${nome} e já me inscrevi na lista VIP Setai Natal. Qual o próximo passo?`);
   form.classList.add('is-done');
+  const sm = document.getElementById('success-modal');
+  document.getElementById('sm-name').textContent = ', ' + nome.split(' ')[0];
+  document.getElementById('sm-wa').href = document.getElementById('wa-link').href;
+  sm.showModal();
 });
 
 /* carrossel */
@@ -795,6 +879,15 @@ document.getElementById('submit').addEventListener('click', async () => {
   let t; track.addEventListener('scroll', () => { clearTimeout(t); t = setTimeout(update, 60); }, {passive:true});
   window.addEventListener('resize', update);
   update();
+})();
+
+/* pop-up de parabéns: fechar */
+(function(){
+  const sm = document.getElementById('success-modal');
+  const close = () => sm.close();
+  document.getElementById('close-success').addEventListener('click', close);
+  document.getElementById('sm-continue').addEventListener('click', close);
+  sm.addEventListener('click', e => { if(e.target === sm) close(); });
 })();
 
 /* pop-up do relatório */
@@ -828,19 +921,24 @@ document.getElementById('submit').addEventListener('click', async () => {
     err.textContent = '';
 
     const params = new URLSearchParams(location.search);
-    const lead = {
-      nome, whatsapp: tel, email, faixa: faixa.value,
-      origem: 'LP Setai Natal - download relatório', data: new Date().toISOString(),
-      utm_source: params.get('utm_source') || '', utm_medium: params.get('utm_medium') || '',
-      utm_campaign: params.get('utm_campaign') || '', utm_content: params.get('utm_content') || ''
-    };
-    if(CONFIG.webhookUrl){
-      try{ await fetch(CONFIG.webhookUrl, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(lead)}); }
-      catch(e){ console.warn('Falha ao enviar lead para o webhook', e); }
-    }
+    const btn = document.getElementById('r-submit');
+    btn.disabled = true;
+    await enviarLead({
+      name: nome,
+      email,
+      phone: tel,
+      ddi: '+55',
+      resposta: textoResposta('LP Setai Natal - Download do Mapa da valorização', params),
+      nome_campanha: params.get('utm_campaign') || 'LP Setai Natal',
+      qualificacao: coletarQualificacao(modal.querySelector('.rm-body'))
+    });
+    btn.disabled = false;
     if(window.fbq){ fbq('track','Lead',{content_name:'Mapa da valorização Setai'}); }
     if(window.gtag){ gtag('event','generate_lead',{method:'download_relatorio'}); }
 
+    document.getElementById('r-wa').href = waLink(CONFIG.reportUrl
+      ? `Olá! Sou ${nome}, baixei o Mapa da valorização Setai e quero conversar sobre o pré-lançamento em Natal.`
+      : `Olá! Sou ${nome}, pedi o Mapa da valorização Setai pela página. Pode me enviar?`);
     const again = document.getElementById('r-again');
     const doneText = modal.querySelector('.rm-done p');
     if(CONFIG.reportUrl){
@@ -862,7 +960,8 @@ document.getElementById('submit').addEventListener('click', async () => {
   const hero = document.querySelector('.hero');
   const lista = document.getElementById('lista');
   let pastHero = false, atForm = false;
-  const update = () => bar.classList.toggle('show', pastHero && !atForm);
+  const fl = document.querySelector('.wa-float');
+  const update = () => { const on = pastHero && !atForm; bar.classList.toggle('show', on); fl.classList.toggle('lift', on && matchMedia('(max-width:720px)').matches); };
   new IntersectionObserver(([e]) => { pastHero = !e.isIntersecting; update(); }).observe(hero);
   new IntersectionObserver(([e]) => { atForm = e.isIntersecting; update(); }).observe(lista);
 })();
